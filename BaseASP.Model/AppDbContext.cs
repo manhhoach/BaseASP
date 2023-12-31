@@ -1,0 +1,65 @@
+﻿using BaseASP.Model.Common;
+using BaseASP.Model.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace BaseASP.Model
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+
+        }
+        public DbSet<User> Users { get; set; }
+
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var isDeletedProperty = entityType.ClrType.GetProperty("IsDeleted");
+                if (isDeletedProperty != null && isDeletedProperty.PropertyType == typeof(bool))
+                {
+                    var parameter = Expression.Parameter(entityType.ClrType, "e");
+                    var body = Expression.Equal(
+                        Expression.Property(parameter, "IsDeleted"),
+                        Expression.Constant(false)
+                    );
+                    var lambda = Expression.Lambda(body, parameter);
+                    modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
+                }
+            }
+        }
+        public override int SaveChanges()
+        {
+            var modelEntries = ChangeTracker.Entries().Where(
+                model => model.Entity is IEntityBase &&
+                (model.State == EntityState.Added || model.State == EntityState.Modified)
+            );
+            foreach (var entry in modelEntries)
+            {
+                if (entry.Entity is IEntityBase entity)
+                {
+                    if (entry.State == EntityState.Added)
+                    {
+                        entity.CreatedDate = DateTime.Now;
+                    }
+                    else
+                    {
+                        // nếu không phải là tạo mới thì ngăn chặn việc thay đổi CreatedDate và CreatedBy
+                        base.Entry(entry).Property("CreatedDate").IsModified = false;
+                        base.Entry(entry).Property("CreatedBy").IsModified = false;
+
+                        entity.UpdatedDate = DateTime.Now;
+                    }
+                }
+
+            }
+            return base.SaveChanges();
+        }
+    }
+}
