@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BaseASP.API.Dto.AuthDto
+namespace BaseASP.Service.AuthService.AuthDto
 {
-    public class SignUpDto
+    public class SignInDto
     {
-        [Required]
-        public string Name { get; set; }
         [MinLength(6)]
         public string Password { get; set; }
         [EmailAddress]

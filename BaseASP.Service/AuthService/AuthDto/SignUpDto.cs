@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BaseASP.API.Dto.AuthDto
+namespace BaseASP.Service.AuthService.AuthDto
 {
     public class SignUpDto
     {

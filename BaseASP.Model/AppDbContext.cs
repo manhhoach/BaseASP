@@ -33,6 +33,7 @@ namespace BaseASP.Model
                     modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
                 }
             }
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         }
         public override int SaveChanges()
         {
