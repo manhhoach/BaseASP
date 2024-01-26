@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using BaseASP.API.Common;
 using BaseASP.API.Dto.AuthDto;
 using BaseASP.Model.Entities;
-using BaseASP.Service.UserService;
+using BaseASP.Service.AuthService;
+using BaseASP.Service.RedisService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaseASP.API.Controllers
@@ -10,38 +12,37 @@ namespace BaseASP.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IMapper _mapper;
-        public AuthController(IUserService userService, IMapper mapper)
+        private readonly IRedisService _redisService;
+        public AuthController(IAuthService authService, IMapper mapper, IRedisService redisService)
         {
-            _userService = userService;
+            _authService = authService;
             _mapper = mapper;
+            _redisService = redisService;
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Signup(SignUpDto signupDto)
-        //{
-        //    var user = _mapper.Map<User>(signupDto);
-        //    await _userService.Add(user);
-        //    return Ok();
-
-        //}
-
-        [HttpGet]
-        public async Task<IActionResult> Test()
+        [HttpPost("sign-up")]
+        public async Task<IActionResult> Signup(SignUpDto signupDto)
         {
-            var signupDto = new SignUpDto() { Email = "test" };
-
-            var user = _mapper.Map<User>(signupDto);
-            await _userService.Add(user);
-            return Ok();
+            try
+            {
+                _redisService.Set("test", "test 1x23");
+                var user = _mapper.Map<User>(signupDto);
+                await _authService.SignUp(user);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Ok(new APIResponse<object>(true, StatusCodes.Status201Created));
 
         }
 
-        // [HttpPost]
-        //public async Task<IActionResult> Signin(SignInDto singinDto)
-        //{
-        //    return Ok();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Signin(SignInDto singinDto)
+        {
+            return Ok();
+        }
     }
 }
