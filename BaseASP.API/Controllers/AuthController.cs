@@ -27,7 +27,6 @@ namespace BaseASP.API.Controllers
         {
             try
             {
-                _redisService.Set("test", "test 1x23");
                 var user = _mapper.Map<User>(signupDto);
                 await _authService.SignUp(user);
             }
