@@ -3,7 +3,6 @@ using BaseASP.API.Common;
 using BaseASP.API.Dto.AuthDto;
 using BaseASP.Model.Entities;
 using BaseASP.Service.AuthService;
-using BaseASP.Service.RedisService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaseASP.API.Controllers
@@ -14,12 +13,12 @@ namespace BaseASP.API.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IMapper _mapper;
-        private readonly IRedisService _redisService;
-        public AuthController(IAuthService authService, IMapper mapper, IRedisService redisService)
+
+        public AuthController(IAuthService authService, IMapper mapper)
         {
             _authService = authService;
             _mapper = mapper;
-            _redisService = redisService;
+
         }
 
         [HttpPost("sign-up")]

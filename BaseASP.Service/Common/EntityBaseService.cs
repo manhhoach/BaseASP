@@ -16,7 +16,7 @@ namespace BaseASP.Service.Common
 
         public async Task Add(T t)
         {
-            await _repository.Add(t);
+            await _repository.AddAsync(t);
             await _unitOfWork.Commit();
         }
 

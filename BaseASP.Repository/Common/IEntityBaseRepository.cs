@@ -1,4 +1,5 @@
 ﻿using BaseASP.Model.Common;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace BaseASP.Repository.Common
@@ -18,7 +19,7 @@ namespace BaseASP.Repository.Common
 
         Task<T> FindByCondition(Expression<Func<T, bool>> predicate);
 
-        Task Add(T t);
+        Task<EntityEntry> AddAsync(T entity);
         Task AddRange(IEnumerable<T> list);
 
         void Update(T t);

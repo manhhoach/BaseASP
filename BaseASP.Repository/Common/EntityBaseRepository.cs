@@ -16,9 +16,9 @@ namespace BaseASP.Repository.Common
             _dbSet = context.Set<T>();
         }
 
-        public async Task Add(T entity)
+        public async Task<EntityEntry> AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
+            return await _dbSet.AddAsync(entity);
         }
 
         public async Task<IEnumerable<T>> GetAll()
