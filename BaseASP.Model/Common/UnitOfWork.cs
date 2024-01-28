@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BaseASP.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BaseASP.Repository.Common
 {
     public sealed class UnitOfWork : IUnitOfWork
     {
-        private DbContext dbContext;
+        private AppDbContext dbContext;
 
-        public UnitOfWork(DbContext dbContext)
+        public UnitOfWork(AppDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

@@ -16,7 +16,8 @@ namespace BaseASP.Service.Common
         Task<T> GetById(int id);
         Task<T> GetById(int id, params Expression<Func<T, object>>[] includeProperties);
 
-        Task<T> FindByCondition(Expression<Func<T, bool>> predicate);
+        Task<List<T>> FindAll(Expression<Func<T, bool>> predicate);
+        Task<T> FindOne(Expression<Func<T, bool>> predicate);
 
         Task Add(T t);
         Task AddRange(IEnumerable<T> list);

@@ -31,7 +31,7 @@ namespace BaseASP.API.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                return BadRequest(new APIResponse<object>(false, StatusCodes.Status400BadRequest, ex.Message, null));
             }
             return Ok(new APIResponse<object>(true, StatusCodes.Status201Created));
 

@@ -40,9 +40,14 @@ namespace BaseASP.Service.Common
             await _unitOfWork.Commit();
         }
 
-        public async Task<T> FindByCondition(Expression<Func<T, bool>> predicate)
+        public async Task<T> FindOne(Expression<Func<T, bool>> predicate)
         {
-            return await _repository.FindByCondition(predicate);
+            return await _repository.FindOne(predicate);
+        }
+
+        public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
+        {
+            return await _repository.FindAll(predicate);
         }
 
         public async Task<IEnumerable<T>> GetAll()

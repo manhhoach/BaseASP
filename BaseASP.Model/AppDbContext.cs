@@ -35,7 +35,7 @@ namespace BaseASP.Model
             }
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         }
-        public override int SaveChanges()
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var modelEntries = ChangeTracker.Entries().Where(
                 model => model.Entity is IEntityBase &&
@@ -57,10 +57,18 @@ namespace BaseASP.Model
 
                         entity.UpdatedDate = DateTime.Now;
                     }
+
+                    if(entry.Entity is User user)
+                    {
+                        if(entry.State == EntityState.Added || (entry.State == EntityState.Modified && entry.Property("Password").IsModified)){
+                            string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
+                        }
+                    }
                 }
 
             }
-            return base.SaveChanges();
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

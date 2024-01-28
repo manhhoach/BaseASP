@@ -1,6 +1,7 @@
 ﻿using BaseASP.Model.Entities;
 using BaseASP.Service.UserService;
 
+
 namespace BaseASP.Service.AuthService
 {
     public class AuthService : IAuthService
@@ -15,9 +16,23 @@ namespace BaseASP.Service.AuthService
             throw new NotImplementedException();
         }
 
+        private string HashPassword(string password)
+        {
+            string salt = BCrypt.Net.BCrypt.GenerateSalt();
+            return BCrypt.Net.BCrypt.HashPassword(password, salt);
+        }
+
         public async Task SignUp(User dto)
         {
-            await _userService.Add(dto);
+            var user = await _userService.FindOne(u=>u.Email == dto.Email);
+            if(user == null)
+            {
+                await _userService.Add(dto);
+            }
+            else
+            {
+                throw new HttpRequestException("Email already exists", null, System.Net.HttpStatusCode.BadRequest);
+            }
         }
     }
 }
