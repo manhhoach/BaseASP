@@ -37,10 +37,20 @@ namespace BaseASP.API.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("sign-in")]
         public async Task<IActionResult> Signin(SignInDto singinDto)
         {
-            return Ok();
+            try
+            {
+                var user = _mapper.Map<User>(singinDto);
+                string token = await _authService.SignIn(user);
+                return Ok(new APIResponse<object>(true, StatusCodes.Status201Created, "Login Successfully", token));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new APIResponse<object>(false, StatusCodes.Status400BadRequest, ex.Message, null));
+            }
+            
         }
     }
 }

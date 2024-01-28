@@ -9,6 +9,7 @@ namespace BaseASP.API
         public MapperProfile()
         {
             CreateMap<User, SignUpDto>().ReverseMap();
+            CreateMap<User, SignInDto>().ReverseMap();
         }
     }
 }

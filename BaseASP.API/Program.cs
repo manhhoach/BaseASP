@@ -49,6 +49,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 
 var app = builder.Build();
 
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+});
 
 if (app.Environment.IsDevelopment())
 {
