@@ -11,7 +11,10 @@ namespace BaseASP.Model
         {
 
         }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }  
 
 
 
@@ -19,6 +22,7 @@ namespace BaseASP.Model
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var isDeletedProperty = entityType.ClrType.GetProperty("IsDeleted");
@@ -33,7 +37,26 @@ namespace BaseASP.Model
                     modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
                 }
             }
-            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+
+
+
+            modelBuilder.Entity<Role>()
+                .HasMany(r => r.Permissions)
+                .WithMany(p => p.Roles)
+                .UsingEntity<RolePermission>(
+                    rp=>rp.HasOne<Permission>().WithMany().HasForeignKey(e=>e.PermissionId),
+                    rp => rp.HasOne<Role>().WithMany().HasForeignKey(e => e.RoleId));
+
+
+            modelBuilder.Entity<User>(user =>
+            {
+                user.HasIndex(u => u.Email).IsUnique();
+                user.HasOne(u => u.Role).WithMany().HasForeignKey(u => u.RoleId);
+            });
+
+            modelBuilder.Entity<RolePermission>().HasKey(rp=> new {rp.RoleId, rp.PermissionId});
+
+
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
