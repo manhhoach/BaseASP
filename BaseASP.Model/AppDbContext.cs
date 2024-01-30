@@ -93,5 +93,15 @@ namespace BaseASP.Model
             }
             return await base.SaveChangesAsync(cancellationToken);
         }
+        
+        private void Seed(ModelBuilder model)
+        {
+            model.Entity<Role>().HasData(
+                new Role() { Name = "Admin"},
+                new Role() { Name="User"}
+                );
+            
+        }
+    
     }
 }
