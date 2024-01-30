@@ -44,6 +44,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     container.RegisterModule(new ServiceModule());
     container.RegisterModule(new AutoMapperModule());
     container.RegisterModule(new RedisModule(builder.Configuration));
+    container.RegisterModule(new ElasticsearchModule());
 });
 
 
