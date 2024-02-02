@@ -14,50 +14,50 @@ namespace BaseASP.Service.Common
             _repository = repository;
         }
 
-        public async Task Add(T t)
+        public async Task AddAsync(T t)
         {
             await _repository.AddAsync(t);
             await _unitOfWork.Commit();
         }
 
-        public async Task AddRange(IEnumerable<T> list)
+        public async Task AddRangeAsync(IEnumerable<T> list)
         {
-            await _repository.AddRange(list);
+            await _repository.AddRangeAsync(list);
             await _unitOfWork.Commit();
         }
 
-        public async Task DeleteRange(List<int> ids)
+        public async Task DeleteRangeAsync(List<int> ids)
         {
-            var entities = await _repository.GetAll(e => ids.Contains(e.Id));
+            var entities = await _repository.GetAllAsync(e => ids.Contains(e.Id));
             _repository.DeleteRange(entities);
             await _unitOfWork.Commit();
         }
 
-        public async Task Destroy(int id)
+        public async Task DestroyAsync(int id)
         {
-            var entity = await _repository.GetById(id);
+            var entity = await _repository.GetByIdAsync(id);
             _repository.Destroy(entity);
             await _unitOfWork.Commit();
         }
 
-        public async Task<T> FindOne(Expression<Func<T, bool>> predicate)
+        public async Task<T> FindOneAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _repository.FindOne(predicate);
+            return await _repository.FindOneAsync(predicate);
         }
 
-        public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
+        public async Task<List<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _repository.FindAll(predicate);
+            return await _repository.FindAllAsync(predicate);
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
-            return await _repository.GetAll(predicate, includeProperties);
+            return await _repository.GetAllAsync(predicate, includeProperties);
         }
 
         public IQueryable<T> GetAllAsQueryable()
@@ -65,34 +65,34 @@ namespace BaseASP.Service.Common
             return _repository.GetAllAsQueryable();
         }
 
-        public async Task<IEnumerable<T>> GetAllNoTracking()
+        public async Task<IEnumerable<T>> GetAllNoTrackingAsync()
         {
-            return await _repository.GetAllNoTracking();
+            return await _repository.GetAllNoTrackingAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllNoTracking(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IEnumerable<T>> GetAllNoTrackingAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
-            return await _repository.GetAllNoTracking(predicate, includeProperties);
+            return await _repository.GetAllNoTrackingAsync(predicate, includeProperties);
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            return await _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<T> GetById(int id, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includeProperties)
         {
-            return await _repository.GetById(id, includeProperties);
+            return await _repository.GetByIdAsync(id, includeProperties);
         }
 
-        public async Task SoftDelete(int id)
+        public async Task SoftDeleteAsync(int id)
         {
-            var entity = await _repository.GetById(id);
+            var entity = await _repository.GetByIdAsync(id);
             _repository.SoftDelete(entity);
             await _unitOfWork.Commit();
         }
 
-        public async Task Update(T t)
+        public async Task UpdateAsync(T t)
         {
             _repository.Update(t);
             await _unitOfWork.Commit();

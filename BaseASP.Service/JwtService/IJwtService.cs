@@ -1,10 +1,11 @@
 ﻿using BaseASP.Model.Entities;
+using System.Security.Claims;
 
 namespace BaseASP.Service.JwtService
 {
     public interface IJwtService
     {
         string GenerateToken(User user);
-        Task<User> DecodeToken(string token);
+        ClaimsPrincipal DecodeToken(string token);
     }
 }

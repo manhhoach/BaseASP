@@ -21,32 +21,25 @@ namespace BaseASP.Repository.Common
             return await _dbSet.AddAsync(entity);
         }
 
-        public virtual async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.Where(t => !t.IsDeleted).ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _dbSet.Where(t => !t.IsDeleted).Where(predicate);
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             return await query.ToListAsync();
         }
 
-        public virtual async Task<T> GetById(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
-            try
-            {
                 return await _dbSet.FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
-            }
-            catch (TaskCanceledException ex)
-            {
 
-            }
-            return await _dbSet.FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
         }
 
-        public virtual async Task<T> GetById(int id, params Expression<Func<T, object>>[] includeProperties)
+        public virtual async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
@@ -68,29 +61,29 @@ namespace BaseASP.Repository.Common
 
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllNoTracking()
+        public virtual async Task<IEnumerable<T>> GetAllNoTrackingAsync()
         {
             return await _dbSet.Where(t => !t.IsDeleted).AsNoTracking().ToListAsync();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllNoTracking(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public virtual async Task<IEnumerable<T>> GetAllNoTrackingAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _dbSet.Where(t => !t.IsDeleted).Where(predicate).AsNoTracking();
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             return await query.ToListAsync();
         }
 
-        public virtual async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
+        public virtual async Task<List<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public virtual async Task<T> FindOne(Expression<Func<T, bool>> predicate)
+        public virtual async Task<T> FindOneAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).FirstOrDefaultAsync();
         }
 
-        public virtual async Task AddRange(IEnumerable<T> list)
+        public virtual async Task AddRangeAsync(IEnumerable<T> list)
         {
             await _dbSet.AddRangeAsync(list);
         }
@@ -111,9 +104,14 @@ namespace BaseASP.Repository.Common
             return _dbSet.AsQueryable();
         }
 
-        public virtual async Task Save()
+        public virtual async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public T GetById(int id)
+        {
+            return _dbSet.FirstOrDefault(x => x.Id == id);
         }
     }
 }

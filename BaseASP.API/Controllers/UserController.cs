@@ -1,4 +1,5 @@
 ﻿using BaseASP.API.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaseASP.API.Controllers
@@ -16,7 +17,8 @@ namespace BaseASP.API.Controllers
         [ServiceFilter(typeof(AuthMiddleware))]
         public async Task<IActionResult> GetUserInfo()
         {
-            return Ok(ModelState);
+            var user = HttpContext.Items["user"];
+            return Ok(user);
         }
     }
 }

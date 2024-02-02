@@ -5,29 +5,29 @@ namespace BaseASP.Service.Common
 {
     public interface IEntityBaseService<T> where T : EntityBase
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
-        Task<IEnumerable<T>> GetAllNoTracking();
-        Task<IEnumerable<T>> GetAllNoTracking(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        Task<IEnumerable<T>> GetAllNoTrackingAsync();
+        Task<IEnumerable<T>> GetAllNoTrackingAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
         IQueryable<T> GetAllAsQueryable();
 
-        Task<T> GetById(int id);
-        Task<T> GetById(int id, params Expression<Func<T, object>>[] includeProperties);
+        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includeProperties);
 
-        Task<List<T>> FindAll(Expression<Func<T, bool>> predicate);
-        Task<T> FindOne(Expression<Func<T, bool>> predicate);
+        Task<List<T>> FindAllAsync(Expression<Func<T, bool>> predicate);
+        Task<T> FindOneAsync(Expression<Func<T, bool>> predicate);
 
-        Task Add(T t);
-        Task AddRange(IEnumerable<T> list);
+        Task AddAsync(T t);
+        Task AddRangeAsync(IEnumerable<T> list);
 
-        Task Update(T t);
+        Task UpdateAsync(T t);
 
-        Task Destroy(int id);
+        Task DestroyAsync(int id);
 
 
-        Task SoftDelete(int id);
-        Task DeleteRange(List<int> ids);
+        Task SoftDeleteAsync(int id);
+        Task DeleteRangeAsync(List<int> ids);
     }
 }

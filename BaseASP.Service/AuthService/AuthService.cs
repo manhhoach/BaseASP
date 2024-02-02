@@ -16,7 +16,7 @@ namespace BaseASP.Service.AuthService
         }
         public async Task<string> SignIn(User dto)
         {
-            User user = await _userService.FindOne(u => u.Email == dto.Email);
+            User user = await _userService.FindOneAsync(u => u.Email == dto.Email);
             if(user == null)
             {
                 throw new HttpRequestException("Email is not exists", null, HttpStatusCode.NotFound);
@@ -46,10 +46,10 @@ namespace BaseASP.Service.AuthService
 
         public async Task SignUp(User dto)
         {
-            var user = await _userService.FindOne(u=>u.Email == dto.Email);
+            var user = await _userService.FindOneAsync(u=>u.Email == dto.Email);
             if(user == null)
             {
-                await _userService.Add(dto);
+                await _userService.AddAsync(dto);
             }
             else
             {

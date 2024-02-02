@@ -5,5 +5,6 @@ namespace BaseASP.Service.UserService
 {
     public interface IUserService : IEntityBaseService<User>
     {
+        User GetById(int id);
     }
 }

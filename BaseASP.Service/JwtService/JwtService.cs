@@ -11,14 +11,12 @@ namespace BaseASP.Service.JwtService
     public class JwtService : IJwtService
     {
         private readonly IConfiguration _config;
-        private readonly IUserService _userService;
-        public JwtService(IConfiguration config, IUserService userService)
+        public JwtService(IConfiguration config)
         {
             _config = config;
-            _userService = userService;
-        }
+  }
 
-        public async Task<User> DecodeToken(string token)
+        public ClaimsPrincipal DecodeToken(string token)
         {
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 
@@ -26,16 +24,10 @@ namespace BaseASP.Service.JwtService
 
             var claims = jsonToken?.Claims;
 
-
             var identity = new ClaimsIdentity(claims);
 
             var principal = new ClaimsPrincipal(identity);
-            int id;
-            int.TryParse(principal?.FindFirstValue("Id"), out id);
-
-            var user = await _userService.GetById(id);
-            return user;
-
+            return principal;       
 
         }
 

@@ -1,29 +1,38 @@
-﻿using BaseASP.Service.JwtService;
+﻿using Amazon.Auth.AccessControlPolicy;
+using BaseASP.Service.JwtService;
+using BaseASP.Service.UserService;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
 namespace BaseASP.API.Common
 {
     public class AuthMiddleware : IActionFilter
     {
-        private IHttpContextAccessor _httpContextAccessor;
+
         private IJwtService _jwtService;
-        public AuthMiddleware(IJwtService jwtService)
+        private IUserService _userService;
+        public AuthMiddleware(IJwtService jwtService, IUserService userService)
         {
             _jwtService = jwtService;
+            _userService = userService;
         }
-        public async void OnActionExecuted(ActionExecutedContext context)
+        public  void OnActionExecuted(ActionExecutedContext context)
+        {
+            
+        }
+
+        public async void OnActionExecuting(ActionExecutingContext context)
         {
             var token = GetTokenFromHeader(context.HttpContext);
-            var user = await _jwtService.DecodeToken(token);
+            ClaimsPrincipal principal =  _jwtService.DecodeToken(token);
+            int id;
+            int.TryParse(principal?.FindFirstValue("Id"), out id);
+            var user = _userService.GetById(id);
             if (user != null)
             {
-                //
+                context.HttpContext.Items["user"] = user;
             }
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-
+            
         }
 
         private string GetTokenFromHeader(HttpContext context)
