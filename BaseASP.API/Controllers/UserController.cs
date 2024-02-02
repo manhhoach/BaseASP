@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BaseASP.API.Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BaseASP.API.Controllers
 {
@@ -12,6 +13,7 @@ namespace BaseASP.API.Controllers
         }
 
         [HttpGet("me")]
+        [ServiceFilter(typeof(AuthMiddleware))]
         public async Task<IActionResult> GetUserInfo()
         {
             return Ok(ModelState);

@@ -21,6 +21,7 @@ namespace BaseASP.API.Controllers
 
         }
 
+
         [HttpPost("sign-up")]
         public async Task<IActionResult> Signup(SignUpDto signupDto)
         {
@@ -50,7 +51,7 @@ namespace BaseASP.API.Controllers
             {
                 return BadRequest(new APIResponse<object>(false, StatusCodes.Status400BadRequest, ex.Message, null));
             }
-            
+
         }
     }
 }

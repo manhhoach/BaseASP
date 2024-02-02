@@ -35,6 +35,14 @@ namespace BaseASP.Repository.Common
 
         public virtual async Task<T> GetById(int id)
         {
+            try
+            {
+                return await _dbSet.FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
+            }
+            catch (TaskCanceledException ex)
+            {
+
+            }
             return await _dbSet.FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
         }
 

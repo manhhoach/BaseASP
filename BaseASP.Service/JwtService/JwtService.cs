@@ -1,4 +1,5 @@
 ﻿using BaseASP.Model.Entities;
+using BaseASP.Service.UserService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,15 +10,33 @@ namespace BaseASP.Service.JwtService
 {
     public class JwtService : IJwtService
     {
-        private IConfiguration _config;
-        public JwtService(IConfiguration config)
+        private readonly IConfiguration _config;
+        private readonly IUserService _userService;
+        public JwtService(IConfiguration config, IUserService userService)
         {
             _config = config;
+            _userService = userService;
         }
 
-        public User DecodeToken()
+        public async Task<User> DecodeToken(string token)
         {
-            throw new NotImplementedException();
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+            var claims = jsonToken?.Claims;
+
+
+            var identity = new ClaimsIdentity(claims);
+
+            var principal = new ClaimsPrincipal(identity);
+            int id;
+            int.TryParse(principal?.FindFirstValue("Id"), out id);
+
+            var user = await _userService.GetById(id);
+            return user;
+
+
         }
 
         public string GenerateToken(User user)

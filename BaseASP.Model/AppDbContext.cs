@@ -14,7 +14,7 @@ namespace BaseASP.Model
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<RolePermission> RolePermissions { get; set; }  
+        public DbSet<RolePermission> RolePermissions { get; set; }
 
 
 
@@ -44,17 +44,17 @@ namespace BaseASP.Model
                 .HasMany(r => r.Permissions)
                 .WithMany(p => p.Roles)
                 .UsingEntity<RolePermission>(
-                    rp=>rp.HasOne<Permission>().WithMany().HasForeignKey(e=>e.PermissionId),
+                    rp => rp.HasOne<Permission>().WithMany().HasForeignKey(e => e.PermissionId),
                     rp => rp.HasOne<Role>().WithMany().HasForeignKey(e => e.RoleId));
 
 
             modelBuilder.Entity<User>(user =>
             {
                 user.HasIndex(u => u.Email).IsUnique();
-                user.HasOne(u => u.Role).WithMany().HasForeignKey(u => u.RoleId);
+                //user.HasOne(u => u.Role).WithMany().HasForeignKey(u => u.RoleId);
             });
 
-            modelBuilder.Entity<RolePermission>().HasKey(rp=> new {rp.RoleId, rp.PermissionId});
+            modelBuilder.Entity<RolePermission>().HasKey(rp => new { rp.RoleId, rp.PermissionId });
 
 
         }
@@ -81,9 +81,10 @@ namespace BaseASP.Model
                         entity.UpdatedDate = DateTime.Now;
                     }
 
-                    if(entry.Entity is User user)
+                    if (entry.Entity is User user)
                     {
-                        if(entry.State == EntityState.Added || (entry.State == EntityState.Modified && entry.Property("Password").IsModified)){
+                        if (entry.State == EntityState.Added || (entry.State == EntityState.Modified && entry.Property("Password").IsModified))
+                        {
                             string salt = BCrypt.Net.BCrypt.GenerateSalt();
                             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
                         }
@@ -93,15 +94,15 @@ namespace BaseASP.Model
             }
             return await base.SaveChangesAsync(cancellationToken);
         }
-        
+
         private void Seed(ModelBuilder model)
         {
             model.Entity<Role>().HasData(
-                new Role() { Name = "Admin"},
-                new Role() { Name="User"}
+                new Role() { Name = "Admin" },
+                new Role() { Name = "User" }
                 );
-            
+
         }
-    
+
     }
 }

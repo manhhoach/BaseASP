@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using BaseASP.API.Common;
 using BaseASP.API.Modules;
 using BaseASP.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +34,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
 );
+
+
+
+builder.Services.AddScoped<AuthMiddleware>();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
