@@ -1,5 +1,4 @@
 ﻿using BaseASP.API.Common;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaseASP.API.Controllers
@@ -13,11 +12,14 @@ namespace BaseASP.API.Controllers
             return View();
         }
 
+
+        [AuthMiddlewareV2]
         [HttpGet("me")]
-        [ServiceFilter(typeof(AuthMiddleware))]
+        // [ServiceFilter(typeof(AuthMiddleware))]
         public async Task<IActionResult> GetUserInfo()
         {
-            var user = HttpContext.Items["user"];
+            // var user = HttpContext.Items["user"];
+            var user = ControllerContext.
             return Ok(user);
         }
     }
