@@ -1,11 +1,12 @@
 ﻿using BaseASP.Service.JwtService;
 using BaseASP.Service.UserService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
 namespace BaseASP.API.Common
 {
-    public class AuthMiddleware : IActionFilter
+    public class AuthMiddleware : IActionFilter 
     {
 
         private IJwtService _jwtService;
@@ -18,7 +19,7 @@ namespace BaseASP.API.Common
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            throw new NotImplementedException();
+           
         }
 
         public void OnActionExecuting(ActionExecutingContext context)

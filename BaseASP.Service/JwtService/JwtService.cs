@@ -14,19 +14,23 @@ namespace BaseASP.Service.JwtService
         public JwtService(IConfiguration config)
         {
             _config = config;
-  }
+        }
 
         public ClaimsPrincipal DecodeToken(string token)
         {
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 
-            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            var tokenValidateParams = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:secretKey"]))
+            };
 
-            var claims = jsonToken?.Claims;
-
-            var identity = new ClaimsIdentity(claims);
-
-            var principal = new ClaimsPrincipal(identity);
+            SecurityToken jsonToken;
+            var principal =  handler.ValidateToken(token,tokenValidateParams, out jsonToken);
             return principal;       
 
         }

@@ -13,13 +13,11 @@ namespace BaseASP.API.Controllers
         }
 
 
-        [AuthMiddlewareV2]
         [HttpGet("me")]
-        // [ServiceFilter(typeof(AuthMiddleware))]
+        [ServiceFilter(typeof(AuthMiddleware))]
         public async Task<IActionResult> GetUserInfo()
         {
-            // var user = HttpContext.Items["user"];
-            var user = ControllerContext.
+            var user = HttpContext.Items["user"];
             return Ok(user);
         }
     }

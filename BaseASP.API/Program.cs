@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using BaseASP.API.Common;
 using BaseASP.API.Modules;
 using BaseASP.Model;
+using BaseASP.Service.JwtService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,19 +17,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-var secretKey = builder.Configuration["Jwt:SecretKey"];
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
-    };
-});
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -50,6 +38,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     container.RegisterModule(new AutoMapperModule());
     container.RegisterModule(new RedisModule(builder.Configuration));
     container.RegisterModule(new ElasticsearchModule());
+    container.RegisterModule(new JwtModule());
 });
 
 
