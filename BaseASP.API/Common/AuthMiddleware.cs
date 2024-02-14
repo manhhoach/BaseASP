@@ -1,12 +1,11 @@
 ﻿using BaseASP.Service.JwtService;
 using BaseASP.Service.UserService;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
 namespace BaseASP.API.Common
 {
-    public class AuthMiddleware : Attribute, IActionFilter 
+    public class AuthMiddleware : IActionFilter
     {
         private IJwtService _jwtService;
         private IUserService _userService;
@@ -18,7 +17,7 @@ namespace BaseASP.API.Common
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-           
+
         }
 
         public void OnActionExecuting(ActionExecutingContext context)

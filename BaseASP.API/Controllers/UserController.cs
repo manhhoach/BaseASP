@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BaseASP.API.Controllers
 {
+    [ServiceFilter(typeof(AuthMiddleware))]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : BaseController
@@ -19,7 +20,8 @@ namespace BaseASP.API.Controllers
 
 
         [HttpGet("me")]
-        [ServiceFilter(typeof(AuthMiddleware))]
+
+        [Permission(Code = "Ảo thật")]
         public async Task<IActionResult> GetUserInfo()
         {
             var user = CurrentUser;
