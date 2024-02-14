@@ -6,9 +6,8 @@ using System.Security.Claims;
 
 namespace BaseASP.API.Common
 {
-    public class AuthMiddleware : IActionFilter 
+    public class AuthMiddleware : Attribute, IActionFilter 
     {
-
         private IJwtService _jwtService;
         private IUserService _userService;
         public AuthMiddleware(IJwtService jwtService, IUserService userService)
@@ -31,7 +30,8 @@ namespace BaseASP.API.Common
             var user = _userService.GetById(id);
             if (user != null)
             {
-                context.HttpContext.Items["user"] = user;
+                context.HttpContext.User = principal;
+      
             }
 
         }
