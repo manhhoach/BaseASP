@@ -35,7 +35,7 @@ namespace BaseASP.Repository.Common
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
-                return await _dbSet.FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
+            return await _dbSet.FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
 
         }
 

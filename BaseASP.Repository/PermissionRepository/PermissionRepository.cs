@@ -4,7 +4,7 @@ using BaseASP.Repository.Common;
 
 namespace BaseASP.Repository.PermissionRepository
 {
-    public class PermissionRepository : EntityBaseRepository<Permission>, IPermissionRepository
+    public class PermissionRepository : EntityBaseRepository<Permission>, ICategoryRepository
     {
         public PermissionRepository(AppDbContext context) : base(context) { }
     }

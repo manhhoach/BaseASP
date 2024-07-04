@@ -3,7 +3,7 @@ using BaseASP.Repository.Common;
 
 namespace BaseASP.Repository.PermissionRepository
 {
-    public interface IPermissionRepository : IEntityBaseRepository<Permission>
+    public interface ICategoryRepository : IEntityBaseRepository<Permission>
     {
     }
 }

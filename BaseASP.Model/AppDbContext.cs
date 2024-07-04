@@ -16,7 +16,10 @@ namespace BaseASP.Model
         public DbSet<User> Users { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
 
-
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Supplier> Supplier { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

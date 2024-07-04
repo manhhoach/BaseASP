@@ -4,9 +4,9 @@ using BaseASP.Service.Common;
 
 namespace BaseASP.Service.PermissionService
 {
-    public class PermissionService : EntityBaseService<Permission>, IPermissionService
+    public class CategoryService : EntityBaseService<Permission>, ICategoryService
     {
-        public PermissionService(IUnitOfWork unitOfWork, IEntityBaseRepository<Permission> repository) : base(unitOfWork, repository)
+        public CategoryService(IUnitOfWork unitOfWork, IEntityBaseRepository<Permission> repository) : base(unitOfWork, repository)
         {
         }
     }
