@@ -42,23 +42,11 @@ namespace BaseASP.Model
             }
 
 
-
-            modelBuilder.Entity<Role>()
-                .HasMany(r => r.Permissions)
-                .WithMany(p => p.Roles)
-                .UsingEntity<RolePermission>(
-                    rp => rp.HasOne<Permission>().WithMany().HasForeignKey(e => e.PermissionId),
-                    rp => rp.HasOne<Role>().WithMany().HasForeignKey(e => e.RoleId));
-
-
             modelBuilder.Entity<User>(user =>
             {
                 user.HasIndex(u => u.Email).IsUnique();
-                //user.HasOne(u => u.Role).WithMany().HasForeignKey(u => u.RoleId);
             });
-
             modelBuilder.Entity<RolePermission>().HasKey(rp => new { rp.RoleId, rp.PermissionId });
-
 
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

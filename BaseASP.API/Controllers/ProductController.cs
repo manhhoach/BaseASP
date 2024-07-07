@@ -49,7 +49,21 @@ namespace BaseASP.API.Controllers
         [HttpGet("total-revenue")]
         public JsonResult GetTotalRevenue()
         {
-            var data = _productService.TotalRevenue();
+            var data = _productService.CalculateTotalTransactions();
+            return new JsonResult(data);
+        }
+
+        [HttpGet("with-out-transaction")]
+        public JsonResult GetWithoutTransaction()
+        {
+            var data = _productService.GetProductsWithoutTransaction();
+            return new JsonResult(data);
+        }
+
+        [HttpGet("largest-volume-suppliers")]
+        public JsonResult GetLargestVolumeSuppliers()
+        {
+            var data = _productService.GetSupplierWithLargestInventory();
             return new JsonResult(data);
         }
     }

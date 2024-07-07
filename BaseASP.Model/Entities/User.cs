@@ -10,8 +10,7 @@ namespace BaseASP.Model.Entities
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [MinLength(6)]
         public string Password { get; set; }
