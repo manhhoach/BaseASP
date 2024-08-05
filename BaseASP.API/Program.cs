@@ -3,12 +3,8 @@ using Autofac.Extensions.DependencyInjection;
 using BaseASP.API.Common;
 using BaseASP.API.Modules;
 using BaseASP.Model;
-using BaseASP.Service.JwtService;
 using BaseASP.Service.UserService;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +41,13 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+
+    DataSeeder.SeedDatabase(context);
+}
 
 app.Use(async (context, next) =>
 {
@@ -63,6 +66,5 @@ app.UseAuthorization();
 
 
 app.MapControllers();
-
 app.Run();
 

@@ -20,11 +20,14 @@ namespace BaseASP.Model
         public DbSet<Supplier> Supplier { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //  Seed(modelBuilder);
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
@@ -86,13 +89,24 @@ namespace BaseASP.Model
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        private void Seed(ModelBuilder model)
+        private static void Seed(ModelBuilder model)
         {
             model.Entity<Role>().HasData(
                 new Role() { Name = "Admin" },
                 new Role() { Name = "User" }
                 );
-
+            model.Entity<User>().HasData(
+                new User { Id = 1, Email = "john.doe@example.com", Name = "John Doe", Password = "password123", RoleId = 2 },
+                new User { Id = 2, Email = "jane.smith@example.com", Name = "Jane Smith", Password = "password123", RoleId = 2 },
+                new User { Id = 3, Email = "michael.jones@example.com", Name = "Michael Jones", Password = "password123", RoleId = 2 },
+                new User { Id = 4, Email = "emily.brown@example.com", Name = "Emily Brown", Password = "password123", RoleId = 2 },
+                new User { Id = 5, Email = "david.wilson@example.com", Name = "David Wilson", Password = "password123", RoleId = 2 },
+                new User { Id = 6, Email = "sarah.davis@example.com", Name = "Sarah Davis", Password = "password123", RoleId = 2 },
+                new User { Id = 7, Email = "james.miller@example.com", Name = "James Miller", Password = "password123", RoleId = 2 },
+                new User { Id = 8, Email = "olivia.moore@example.com", Name = "Olivia Moore", Password = "password123", RoleId = 2 },
+                new User { Id = 9, Email = "william.taylor@example.com", Name = "William Taylor", Password = "password123", RoleId = 2 },
+                new User { Id = 10, Email = "ava.anderson@example.com", Name = "Ava Anderson", Password = "password123", RoleId = 2 }
+            );
         }
 
     }
